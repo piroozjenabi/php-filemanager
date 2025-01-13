@@ -1,4 +1,4 @@
-    PHP File Manager - A Lightweight and Secure File Management Tool body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #1a1a1a; color: #ffffff; } h1, h2, h3 { color: #ffffff; } a { color: #1e90ff; text-decoration: none; } a:hover { text-decoration: underline; } .container { max-width: 800px; margin: 0 auto; } .star-button { display: inline-block; background-color: #24292e; color: #ffffff; padding: 10px 20px; border-radius: 5px; text-align: center; margin: 20px 0; } .star-button:hover { background-color: #2c3136; } img { max-width: 100%; height: auto; border-radius: 10px; } .section { margin-bottom: 40px; } .section h2 { border-bottom: 2px solid #444; padding-bottom: 10px; } .section ul { list-style-type: disc; padding-left: 20px; } .section code { background-color: #333; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+
 
 🌟 PHP File Manager - A Lightweight and Secure File Management Tool
 ===================================================================
