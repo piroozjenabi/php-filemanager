@@ -1,4 +1,4 @@
-🌟 PHP File Manager - A Lightweight and Secure File Management Tool
+🌟 #PHP File Manager - A Lightweight and Secure File Management Tool
 PHP File Manager Demo
 
 A modern, secure, and easy-to-use PHP-based file manager with a dark mode UI, image preview on hover, and powerful file management features. Perfect for developers and server administrators.
