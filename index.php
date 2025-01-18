@@ -2,7 +2,9 @@
 //
 // Configuration and Session Setup
 //
-error_reporting(0); // Disable error reporting for production
+error_reporting(E_ALL); // Report all PHP errors
+ini_set('display_errors', 1); // Display errors to the browser
+ini_set('display_startup_errors', 1); // Display startup errors
 session_start(); // Start the session
 define('username', 'admin'); // Define the username
 define('password', 'admin'); // Define the password
@@ -11,11 +13,6 @@ define('password', 'admin'); // Define the password
 // Helper Functions
 //
 
-// Check if a variable is set
-function has($obj) {
-    return isset($obj);
-}
-
 // Output and terminate execution
 function dd($text) {
     die($text);
@@ -23,7 +20,7 @@ function dd($text) {
 
 // Get session value
 function get_session($name) {
-    return has($_SESSION[$name]) ? $_SESSION[$name] : false;
+    return isset($_SESSION[$name]) ? $_SESSION[$name] : false;
 }
 
 // Set session value
@@ -33,12 +30,20 @@ function set_session($name, $val) {
 
 // Get POST data
 function get_post($name) {
-    return has($_POST[$name]) ? $_POST[$name] : false;
+    return isset($_POST[$name]) ? htmlspecialchars($_POST[$name]) : false;
 }
 
 // Get GET data
 function get_get($name) {
-    return has($_GET[$name]) ? $_GET[$name] : false;
+    return isset($_GET[$name]) ? htmlspecialchars($_GET[$name]) : false;
+}
+
+// Generate a full URL for a file
+function get_file_url($path) {
+    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https://' : 'http://';
+    $domain = $_SERVER['HTTP_HOST'];
+    $relative_path = str_replace($_SERVER['DOCUMENT_ROOT'], '', $path);
+    return $protocol . $domain . $relative_path;
 }
 
 // Create an input element
@@ -53,7 +58,7 @@ function makeInput($type, $name, $val = "", $style = "") {
 function makeForm($method, $inputArray, $file = "") {
     $form = "<form method='$method' enctype='$file' class='mb-4 p-4 bg-gray-800 rounded-lg'>";
     foreach ($inputArray as $key => $val) {
-        $form .= makeInput($key, (is_array($val) ? $val[0] : $val), (has($val[1]) ? $val[1] : ""), (has($val[2]) ? $val[2] : ""));
+        $form .= makeInput($key, (is_array($val) ? $val[0] : $val), (isset($val[1]) ? $val[1] : ""), (isset($val[2]) ? $val[2] : ""));
     }
     return $form . "</form>";
 }
@@ -85,7 +90,7 @@ function login() {
     if (get_session('login')) {
         return true;
     }
-    if (!get_post('login')) {
+    if (!isset($_POST['login'])) {
         return false;
     }
     if (get_post('username') != username || get_post('pass') != password) {
@@ -240,7 +245,8 @@ function get_dir() {
 
         // Image preview on hover
         if (is_file($p) && in_array(strtolower(pathinfo($p, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])) {
-            $l = "<div class='relative group'><span>$d</span><div class='hidden group-hover:block absolute z-10 bg-gray-800 p-2 rounded-lg'><img src='$p' class='w-32 h-32 object-cover'></div></div>";
+            $image_url = get_file_url($p); // Generate full URL for the image
+            $l = "<div class='relative group'><span>$d</span><div class='hidden group-hover:block absolute z-10 bg-gray-800 p-2 rounded-lg'><img src='$image_url' class='w-32 h-32 object-cover'></div></div>";
         }
 
         if (is_file($p)) {
